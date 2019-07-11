@@ -9,5 +9,5 @@ checked:
   传入表示已经选择的标签数组
   
 ## 方法:
-seleced:
+selected:
   返回已经选择的标签数组
