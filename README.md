@@ -21,6 +21,7 @@ selected:
   
 ## 例子：设置初始化选择标签  
 ![Image text](https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example1.jpg)
+<img src="https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example1.jpg" width="200"/>
 ```
 export default {
   data(){
