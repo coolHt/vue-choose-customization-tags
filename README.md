@@ -1,10 +1,14 @@
 # vue-choose-custom-tags
 customize to choose tags, set tags to selected
 
-## 使用方法：
+#### 使用方法：
+```
 npm install --save xz-mtag
+```
 ##
+```
 Vue.use(Mtag)
+```
 ##
 ```
 <Mtag :tags="tags" :checked="checked" @selected="getTags"/>
@@ -24,6 +28,7 @@ selected:
 #### 例子：设置初始化选择标签  
 
 <img src="https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example1.jpg" width="400"/>
+##
 ```
 export default {
   data(){
@@ -36,6 +41,7 @@ export default {
 ## 例子：设置初始化选择标签和已选择标签
 
 <img src="https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example2.jpg" width="400"/>
+##
 ```
 export default {
   data(){
