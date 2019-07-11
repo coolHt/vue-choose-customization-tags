@@ -20,6 +20,7 @@ selected:
   接受一个参数,返回已经选择的标签数组
   
 ## 例子：设置初始化选择标签  
+![Image text](https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example1.jpg)
 ```
 export default {
   data(){
@@ -30,6 +31,7 @@ export default {
 }
 ```
 ## 例子：设置初始化选择标签和已选择标签
+![Image text](https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example2.jpg)
 ```
 export default {
   data(){
