@@ -1,6 +1,6 @@
 {
   "name": "xz-mtag",
-  "description": "customize to add tag",
+  "description": "customize to add tags",
   "version": "2.0.1",
   "main":"dist/xz-mtag.js",
   "author": "handsomeBoy <>",
