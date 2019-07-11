@@ -19,7 +19,7 @@ checked:
 selected:
   接受一个参数,返回已经选择的标签数组
   
-##例子：设置初始化选择标签  
+## 例子：设置初始化选择标签  
 ```
 export default {
   data(){
@@ -29,7 +29,7 @@ export default {
   }
 }
 ```
-##例子：设置初始化选择标签和已选择标签
+## 例子：设置初始化选择标签和已选择标签
 ```
 export default {
   data(){
