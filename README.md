@@ -4,13 +4,9 @@ customize to choose tags, set tags to selected
 #### 使用方法：
 ```
 npm install --save xz-mtag
-```
-##
-```
+
 Vue.use(Mtag)
-```
-##
-```
+
 <Mtag :tags="tags" :checked="checked" @selected="getTags"/>
 ```
 
