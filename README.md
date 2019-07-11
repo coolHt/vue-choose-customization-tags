@@ -31,6 +31,7 @@ selected:
 
 
 ```
+<Mtag :tags="taglist" />
 export default {
   data(){
     return {
@@ -45,6 +46,7 @@ export default {
 
 
 ```
+<Mtag :tags="taglist" :checked="checkedlist" @selected="getTags"/>
 export default {
   data(){
     return {
