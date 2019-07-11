@@ -27,8 +27,8 @@ selected:
   
 #### 例子：设置初始化选择标签  
 
-<img src="https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example1.jpg" width="400"/>
-##
+![Image text](<img src="https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example1.jpg" width="400"/>)
+
 ```
 export default {
   data(){
@@ -40,8 +40,8 @@ export default {
 ```
 ## 例子：设置初始化选择标签和已选择标签
 
-<img src="https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example2.jpg" width="400"/>
-##
+![Image text](<img src="https://github.com/coolHt/vue-choose-custom-tags/blob/master/exampleImg/example2.jpg" width="400"/>)
+
 ```
 export default {
   data(){
