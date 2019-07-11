@@ -1,7 +1,7 @@
 {
   "name": "xz-mtag",
   "description": "customize to add tag",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main":"dist/xz-mtag.js",
   "author": "handsomeBoy <>",
   "license": "MIT",
