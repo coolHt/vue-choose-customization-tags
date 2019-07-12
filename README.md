@@ -1,4 +1,4 @@
-# vue-choose-customize-tags
+# vue-choose-customization-tags
 customize to choose tags, set tags to selected
 
 #### 使用方法：
