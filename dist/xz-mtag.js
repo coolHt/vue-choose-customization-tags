@@ -119,48 +119,13 @@ return /******/ (function(modules) { // webpackBootstrap
   data() {
     return {
       tagList: [], //初始化列表
+      checkedCopy: [], //checked保存
       choosed: [], //已选择列表
       returnTags: [], //返回出已经选择的标签
       customTag: '', //自定义添加
       hasRepeat: false,
       preBtn: null //按钮列表
     };
-  },
-
-  mounted() {
-    let _this = this;
-    this.tags.forEach(function (v, index) {
-      _this.tagList.push({
-        num: index,
-        value: v
-      });
-    });
-    this.$nextTick(() => {
-      let _this = this;
-      this.checked.forEach((v, index) => {
-        let isExist = false;
-        _this.returnTags.push(v);
-        _this.preBtn = document.getElementsByClassName('xz-tag-prepare');
-        for (let i = 0; i < _this.tagList.length; i++) {
-          if (v == _this.tagList[i].value) {
-            _this.choosed.push({
-              num: _this.tagList[i].num,
-              value: v
-            });
-            _this.preBtn[_this.tagList[i].num].classList.add('xz-choosed');
-            isExist = true;
-            break;
-          }
-        }
-        //处理pre列表中不存在的
-        if (isExist == false) {
-          _this.choosed.push({
-            num: _this.choosed.length + new Date().valueOf(),
-            value: v
-          });
-        }
-      });
-    });
   },
   methods: {
     chooseTag(e) {
@@ -194,8 +159,7 @@ return /******/ (function(modules) { // webpackBootstrap
       for (let i = 0; i < this.tagList.length; i++) {
         //如果列表中有
         if (this.tagList[i].value == nValue) {
-          let tagBtn = document.getElementsByClassName("xz-tag-prepare");
-
+          let tagBtn = this.$refs.buttons.getElementsByClassName("xz-tag-prepare");
           tagBtn[this.tagList[i].num].classList.add('xz-choosed');
           tag.num = this.tagList[i].num;
           tag.value = nValue;
@@ -225,20 +189,86 @@ return /******/ (function(modules) { // webpackBootstrap
     //删除已选项
     delSelected(e, index) {
       let num = e.target.dataset.sortnum;
-      let chooseBtn = document.getElementsByClassName('xz-tag-prepare');
+      let chooseBtn = this.$refs.buttons.getElementsByClassName('xz-tag-prepare');
       if (chooseBtn[num]) {
         chooseBtn[num].classList.remove('xz-choosed');
       }
       this.choosed.splice(index, 1);
       this.returnTags.splice(index, 1);
       this.$emit('selected', this.returnTags); //返回选中项
+
+    }
+  },
+  computed: {
+    returnChecked() {
+      //返回选择设置项
+      this.checkedCopy = this.choosed;
+      return this.checked;
     }
   },
   watch: {
     'customTag': function () {
+      //判断提示文字是否出现
       if (this.customTag == '') {
         this.hasRepeat = false;
       }
+    },
+    'tags': {
+      handler: function () {
+        //设置初始化标签项
+        let _this = this;
+        _this.tagList = [];
+        _this.choosed = [];
+        this.checkedCopy = [];
+        if (this.tags.length > 0) {
+          this.tags.forEach(function (v, index) {
+            _this.tagList.push({
+              num: index,
+              value: v
+            });
+          });
+        }
+        this.$nextTick(() => {
+          this.checkedCopy = this.returnChecked;
+        });
+      },
+      immediate: true
+    },
+    'checkedCopy': {
+      handler: function () {
+        let _this = this;
+        this.$nextTick(() => {
+          _this.choosed = [];
+          //需要筛选
+          _this.checkedCopy.forEach((v, index) => {
+            let isExist = false;
+
+            _this.preBtn = _this.$refs.buttons.getElementsByClassName('xz-tag-prepare'); //预选标签
+            _this.checkBtn = _this.$refs.buttons.getElementsByClassName('xz-choosed-tag'); //已选择标签
+            for (let i = 0; i < _this.tagList.length; i++) {
+              if (v == _this.tagList[i].value) {
+                //判断预标签中是否存在
+                _this.choosed.push({
+                  num: _this.tagList[i].num,
+                  value: v
+                });
+                _this.preBtn[_this.tagList[i].num].classList.add('xz-choosed');
+                isExist = true;
+                break;
+              }
+            }
+            //处理pre列表中不存在的
+            if (isExist == false) {
+              _this.choosed.push({
+                num: _this.choosed.length + new Date().valueOf(),
+                value: v
+              });
+            }
+            _this.returnTags.push(v); //需要判断过才添加
+          });
+        });
+      },
+      immediate: true
     }
   }
 });
@@ -270,7 +300,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_manipulation_tag_vue__ = __webpack_require__(0);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_742596a6_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_manipulation_tag_vue__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_38a24c5e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_manipulation_tag_vue__ = __webpack_require__(9);
 function injectStyle (ssrContext) {
   __webpack_require__(3)
 }
@@ -285,12 +315,12 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-742596a6"
+var __vue_scopeId__ = "data-v-38a24c5e"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_manipulation_tag_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_742596a6_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_manipulation_tag_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_38a24c5e_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_manipulation_tag_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -311,7 +341,7 @@ var content = __webpack_require__(4);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(6)("8b8bac50", content, true, {});
+var update = __webpack_require__(6)("b89771d6", content, true, {});
 
 /***/ }),
 /* 4 */
@@ -322,7 +352,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, ".xz-tag-prepare[data-v-742596a6]{border:1px solid #ddd;border-radius:4px;padding:10px 12px;color:#333;font-size:13px;margin:0 10px 10px 0;cursor:pointer;outline:none}.xz-choosed-tag[data-v-742596a6]{display:inline-block;padding:6px 12px;margin:0 10px 10px 0;color:#fff;background:#0e90d2;border-radius:4px;font-size:12px;line-height:20px}.xz-close[data-v-742596a6]{color:#fff;cursor:pointer;font-style:normal;font-size:16px;margin-left:5px;line-height:20px}.xz-choosed[data-v-742596a6]{background:#ebeef5!important}.xz-tag-input[data-v-742596a6]{font-size:14px;width:170px;padding:0 10px}.xz-tag-button[data-v-742596a6],.xz-tag-input[data-v-742596a6]{border:1px solid #ddd;border-radius:4px;height:38px;box-sizing:border-box;color:#333;outline:none}.xz-tag-button[data-v-742596a6]{padding:0 12px;font-size:13px;cursor:pointer}.xz-repeat-error[data-v-742596a6]{font-size:14px;margin-top:5px;color:#c82a2e}.fade-enter-active[data-v-742596a6],.fade-leave-active[data-v-742596a6]{transition:opacity .5s linear}.fade-enter-to[data-v-742596a6]{opacity:1}.fade-enter[data-v-742596a6],.fade-leave-to[data-v-742596a6]{opacity:0}", ""]);
+exports.push([module.i, ".xz-tag-prepare[data-v-38a24c5e]{border:1px solid #ddd;border-radius:4px;padding:10px 12px;color:#333;font-size:13px;margin:0 10px 10px 0;cursor:pointer;outline:none}.xz-choosed-tag[data-v-38a24c5e]{display:inline-block;padding:6px 12px;margin:0 10px 10px 0;color:#fff;background:#409eff;border-radius:4px;font-size:12px;line-height:20px}.xz-close[data-v-38a24c5e]{color:#fff;cursor:pointer;font-style:normal;font-size:16px;margin-left:5px;line-height:20px}.xz-close[data-v-38a24c5e]:after{content:\"x\"}.xz-choosed[data-v-38a24c5e]{background:#ebeef5!important}.xz-tag-input[data-v-38a24c5e]{font-size:14px;width:170px;padding:0 10px}.xz-tag-button[data-v-38a24c5e],.xz-tag-input[data-v-38a24c5e]{border:1px solid #ddd;border-radius:4px;height:38px;box-sizing:border-box;color:#333;outline:none}.xz-tag-button[data-v-38a24c5e]{padding:0 12px;font-size:13px;cursor:pointer}.xz-repeat-error[data-v-38a24c5e]{font-size:14px;margin-top:5px;color:#c82a2e}.fade-enter-active[data-v-38a24c5e],.fade-leave-active[data-v-38a24c5e]{transition:opacity .5s linear}.fade-enter-to[data-v-38a24c5e]{opacity:1}.fade-enter[data-v-38a24c5e],.fade-leave-to[data-v-38a24c5e]{opacity:0}", ""]);
 
 // exports
 
@@ -784,7 +814,7 @@ module.exports = function normalizeComponent (
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"xz-custom-tag"},[(_vm.choosed.length > 0)?_c('div',{staticClass:"xz-already-choose"},_vm._l((_vm.choosed),function(tag,index){return _c('span',{key:tag.num,staticClass:"xz-choosed-tag"},[_vm._v("\n      "+_vm._s(tag.value)+"\n      "),_c('i',{staticClass:"xz-close",attrs:{"data-sortnum":tag.num},on:{"click":function($event){return _vm.delSelected($event,index)}}},[_vm._v("x")])])}),0):_vm._e(),_vm._v(" "),(_vm.tags.length > 0)?_c('div',_vm._l((_vm.tagList),function(tag){return _c('button',{key:tag.num,staticClass:"xz-tag-prepare",attrs:{"data-sortnum":tag.num},on:{"click":function($event){return _vm.chooseTag($event)}}},[_vm._v(_vm._s(tag.value))])}),0):_vm._e(),_vm._v(" "),_c('div',{staticClass:"xz-add-tag"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.customTag),expression:"customTag"}],staticClass:"xz-tag-input",attrs:{"type":"text"},domProps:{"value":(_vm.customTag)},on:{"input":function($event){if($event.target.composing){ return; }_vm.customTag=$event.target.value}}}),_vm._v(" "),_c('button',{staticClass:"xz-tag-button",on:{"click":_vm.addTag}},[_vm._v("新增标签")])]),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('p',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasRepeat),expression:"hasRepeat"}],staticClass:"xz-repeat-error"},[_vm._v("标签已存在")])])],1)}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"buttons",staticClass:"xz-custom-tag"},[(_vm.choosed.length > 0)?_c('div',{staticClass:"xz-already-choose"},_vm._l((_vm.choosed),function(tag,index){return _c('span',{key:tag.num,staticClass:"xz-choosed-tag"},[_vm._v("\n      "+_vm._s(tag.value)+"\n      "),_c('i',{staticClass:"xz-close",attrs:{"data-sortnum":tag.num},on:{"click":function($event){return _vm.delSelected($event,index)}}})])}),0):_vm._e(),_vm._v(" "),(_vm.tags.length > 0)?_c('div',_vm._l((_vm.tagList),function(tag){return _c('button',{key:tag.num,staticClass:"xz-tag-prepare",attrs:{"data-sortnum":tag.num},on:{"click":function($event){return _vm.chooseTag($event)}}},[_vm._v(_vm._s(tag.value))])}),0):_vm._e(),_vm._v(" "),_c('div',{staticClass:"xz-add-tag"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.customTag),expression:"customTag"}],staticClass:"xz-tag-input",attrs:{"type":"text"},domProps:{"value":(_vm.customTag)},on:{"input":function($event){if($event.target.composing){ return; }_vm.customTag=$event.target.value}}}),_vm._v(" "),_c('button',{staticClass:"xz-tag-button",on:{"click":_vm.addTag}},[_vm._v("新增标签")])]),_vm._v(" "),_c('transition',{attrs:{"name":"fade"}},[_c('p',{directives:[{name:"show",rawName:"v-show",value:(_vm.hasRepeat),expression:"hasRepeat"}],staticClass:"xz-repeat-error"},[_vm._v("标签已存在")])])],1)}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);

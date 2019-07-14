@@ -1,9 +1,9 @@
 <template>
-  <div class="xz-custom-tag">
+  <div class="xz-custom-tag" ref="buttons">
     <div class="xz-already-choose" v-if="choosed.length > 0">
       <span class="xz-choosed-tag" v-for="(tag,index) in choosed" :key="tag.num">
         {{tag.value}}
-        <i class="xz-close" @click="delSelected($event,index)" :data-sortnum="tag.num">x</i>
+        <i class="xz-close" @click="delSelected($event,index)" :data-sortnum="tag.num"></i>
       </span>
     </div>
     <!--选择项-->
@@ -39,48 +39,13 @@
     data() {
       return {
         tagList: [], //初始化列表
+        checkedCopy:[],//checked保存
         choosed: [], //已选择列表
         returnTags: [], //返回出已经选择的标签
         customTag: '', //自定义添加
         hasRepeat: false,
         preBtn: null, //按钮列表
       }
-    },
-
-    mounted() {
-      let _this = this;
-      this.tags.forEach(function (v, index) {
-        _this.tagList.push({
-          num: index,
-          value: v
-        })
-      })
-      this.$nextTick(() => {
-        let _this = this;
-        this.checked.forEach((v, index) => {
-          let isExist = false;
-          _this.returnTags.push(v);
-          _this.preBtn = document.getElementsByClassName('xz-tag-prepare');
-          for (let i = 0; i < _this.tagList.length; i++) {
-            if (v == _this.tagList[i].value) {
-              _this.choosed.push({
-                num: _this.tagList[i].num,
-                value: v
-              })
-              _this.preBtn[_this.tagList[i].num].classList.add('xz-choosed');
-              isExist = true;
-              break;
-            }
-          }
-          //处理pre列表中不存在的
-          if (isExist == false) {
-            _this.choosed.push({
-              num: _this.choosed.length + new Date().valueOf(),
-              value: v
-            })
-          }
-        })
-      })
     },
     methods: {
       chooseTag(e) {
@@ -113,8 +78,7 @@
         /**需要判断自定义列表中是否有自定义添加的标签**/
         for (let i = 0; i < this.tagList.length; i++) { //如果列表中有
           if (this.tagList[i].value == nValue) {
-            let tagBtn = document.getElementsByClassName("xz-tag-prepare");
-
+            let tagBtn = this.$refs.buttons.getElementsByClassName("xz-tag-prepare");
             tagBtn[this.tagList[i].num].classList.add('xz-choosed');
             tag.num = this.tagList[i].num;
             tag.value = nValue;
@@ -145,24 +109,87 @@
       //删除已选项
       delSelected(e, index) {
         let num = e.target.dataset.sortnum;
-        let chooseBtn = document.getElementsByClassName('xz-tag-prepare');
+        let chooseBtn = this.$refs.buttons.getElementsByClassName('xz-tag-prepare');
         if (chooseBtn[num]) {
           chooseBtn[num].classList.remove('xz-choosed');
         }
         this.choosed.splice(index, 1);
         this.returnTags.splice(index, 1);
         this.$emit('selected', this.returnTags); //返回选中项
+
+
+      }
+    },
+    computed:{
+      returnChecked(){ //返回选择设置项
+        this.checkedCopy = this.choosed;
+        return this.checked;
       }
     },
     watch: {
-      'customTag': function () {
+      'customTag': function () { //判断提示文字是否出现
         if (this.customTag == '') {
           this.hasRepeat = false;
         }
+
+      },
+      'tags': {
+        handler: function () { //设置初始化标签项
+          let _this = this;
+          _this.tagList = [];
+          _this.choosed = [];
+          this.checkedCopy = [];
+          if (this.tags.length > 0) {
+            this.tags.forEach(function (v, index) {
+              _this.tagList.push({
+                num: index,
+                value: v
+              })
+            })
+          }
+          this.$nextTick(() => {
+            this.checkedCopy = this.returnChecked;
+          })
+        },
+        immediate: true
+      },
+      'checkedCopy': {
+        handler: function () {
+          let _this = this;
+          this.$nextTick(() => {
+            _this.choosed = [];
+            //需要筛选
+            _this.checkedCopy.forEach((v, index) => {
+              let isExist = false;
+              
+              _this.preBtn = _this.$refs.buttons.getElementsByClassName('xz-tag-prepare');//预选标签
+              _this.checkBtn = _this.$refs.buttons.getElementsByClassName('xz-choosed-tag'); //已选择标签
+              for (let i = 0; i < _this.tagList.length; i++) {
+                if (v == _this.tagList[i].value) { //判断预标签中是否存在
+                    _this.choosed.push({
+                      num: _this.tagList[i].num,
+                      value: v
+                    })
+                    _this.preBtn[_this.tagList[i].num].classList.add('xz-choosed');
+                    isExist = true;
+                    break; 
+                }
+              }
+              //处理pre列表中不存在的
+              if (isExist == false) {
+                _this.choosed.push({
+                  num: _this.choosed.length + new Date().valueOf(),
+                  value: v
+                })
+              }
+              _this.returnTags.push(v); //需要判断过才添加
+            })
+          });
+        },
+        immediate: true
       }
     }
   }
-
 </script>
 
 <style scoped>
@@ -182,7 +209,7 @@
     padding: 6px 12px;
     margin: 0 10px 10px 0;
     color: #ffffff;
-    background: #0E90D2;
+    background: #409eff;
     border-radius: 4px;
     font-size: 12px;
     line-height: 20px;
@@ -195,6 +222,9 @@
     font-size: 16px;
     margin-left: 5px;
     line-height: 20px;
+  }
+  .xz-close::after{
+    content:'x';
   }
 
   .xz-choosed {
@@ -244,5 +274,4 @@
   .fade-leave-to {
     opacity: 0;
   }
-
 </style>

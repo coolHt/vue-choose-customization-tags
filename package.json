@@ -1,8 +1,8 @@
 {
   "name": "xz-mtag",
   "description": "customize to add tags",
-  "version": "2.0.1",
-  "main":"dist/xz-mtag.js",
+  "version": "3.0.1",
+  "main": "dist/xz-mtag.js",
   "author": "handsomeBoy <>",
   "license": "MIT",
   "private": false,
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coolHt/vue-choose-custom-tags"
+    "url": "git+https://github.com/coolHt/vue-choose-customization-tags"
   },
   "dependencies": {
     "vue": "^2.5.11"
